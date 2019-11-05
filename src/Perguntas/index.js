@@ -15,7 +15,7 @@ function Perguntas({dados,quantidades,dispatch,navigation}){
     useEffect(
     () => {
 
-        if(counter>=6){
+        if(counter>=10){
             setCounter(0);
             dispatch(setEscolha(dados.numPergunta,-1))
             if(quantidades.respondida+1 == quantidades.total){

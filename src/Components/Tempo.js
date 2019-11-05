@@ -22,10 +22,10 @@ export default function Tempo({limit, tempo}) {
                     return '#cfd1cd' 
                     break;
             case limit-2:
-                    return '#bfa3a3' 
+                    return '#d42020' 
                     break;
             case limit-1:
-                    return '#a33e3e' 
+                    return '#d42020' 
                     break;
             case limit:
                     return '#d42020' 

@@ -7,29 +7,16 @@ import {BrContent} from 'brcomponentsrn';
 export default function Tempo({limit, tempo}) {
 
     function getFonte(){
-        return 12+(tempo+2)
+
+        return 14; 
     }
 
     function getCor(){
         switch (tempo) {
-            case limit-5:
-                return '#90d444'
+            case limit<5:
+                return '#015'
                 break;
-            case limit-4:
-                return '#52a836' 
-                break;
-            case limit-3:
-                    return '#cfd1cd' 
-                    break;
-            case limit-2:
-                    return '#d42020' 
-                    break;
-            case limit-1:
-                    return '#d42020' 
-                    break;
-            case limit:
-                    return '#d42020' 
-                    break;
+           
         
             default:
                 return '#90d444' 

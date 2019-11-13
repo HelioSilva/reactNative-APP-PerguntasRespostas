@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { StyleSheet,FlatList, Text,TouchableOpacity,Picker } from 'react-native';
+import { FlatList, Text,TouchableOpacity } from 'react-native';
 import {BrContent} from 'brcomponentsrn';
 import api from '../../Services/api';
 
@@ -22,14 +22,13 @@ export function Home({dados,dispatch,navigation}) {
     return{
         type:"PROXIMA_PERGUNTA"
     }
-}
+  }
 
   async function loadDados(){
    // setRefresh(true);
     console.log('Consultando api...');
-    const response = await api.post('/showOnce',
-             {id:"5dc053b35198aa1f40a78a45"}) ; 
-    dispatch(getInit( [response.data] ));
+    const response = await api.get('/showConcursos') ; 
+    dispatch(getInit( response.data ));
   }
 
   useEffect(
@@ -42,7 +41,7 @@ export function Home({dados,dispatch,navigation}) {
     <BrContent flex={1} safe>
       
       <BrContent flex={0.4} middle bg='#74c'>
-        <Text style={{color:'#fff',fontSize:18}}>Concurso Bíblico APP v7</Text>
+        <Text style={{color:'#fff',fontSize:18}}>Concurso Bíblico APP 88</Text>
       </BrContent>
       <BrContent flex style={{margin: 10}}>
         <FlatList

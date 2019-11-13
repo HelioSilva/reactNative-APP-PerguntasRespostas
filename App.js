@@ -13,7 +13,6 @@ import Home from './src/Home/index';
 import Perguntas from './src/Perguntas/index';
 import Resultado from './src/Resultado/index';
 
-
 const MainNavigator = createStackNavigator({
   Home ,
   Perguntas,
@@ -22,6 +21,7 @@ const MainNavigator = createStackNavigator({
   initialRouteName:'Home',
   defaultNavigationOptions:{
     header:null 
+    
   }
   
 });

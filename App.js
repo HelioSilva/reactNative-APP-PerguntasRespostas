@@ -12,11 +12,13 @@ import Store from './src/Store/index';
 import Home from './src/Home/index';
 import Perguntas from './src/Perguntas/index';
 import Resultado from './src/Resultado/index';
+import Register from './src/Register/index' ;
 
 const MainNavigator = createStackNavigator({
   Home ,
   Perguntas,
-  Resultado
+  Resultado,
+  Register
 },{
   initialRouteName:'Home',
   defaultNavigationOptions:{

@@ -3,12 +3,11 @@ import { StyleSheet,View,FlatList, Text,Picker,TouchableOpacity } from 'react-na
 import {BrContent} from 'brcomponentsrn';
 
 import Tempo from '../Components/Tempo';
-
-
-
 import {connect} from 'react-redux';
 
-function Perguntas({dados,quantidades,dispatch,navigation}){    
+
+
+function Perguntas({quantidades,pergunta,dispatch,navigation}){    
 
     const [counter, setCounter] = useState(0);
 
@@ -17,14 +16,14 @@ function Perguntas({dados,quantidades,dispatch,navigation}){
 
         if(counter>=10){
             setCounter(0);
-            dispatch(setEscolha(dados.numPergunta,-1))
+            dispatch(setEscolha(pergunta.numPergunta ,-1))
             if(quantidades.respondida+1 == quantidades.total){
                 navigation.navigate('Resultado');
             }else{
                 dispatch(getPergunta());
             }
         } else {
-            if(dados.alternativaEscolhida>0){
+            if(pergunta.alternativaEscolhida>0){
 
                 if(quantidades.respondida+1 == quantidades.total){
                     navigation.navigate('Resultado');
@@ -65,7 +64,7 @@ function Perguntas({dados,quantidades,dispatch,navigation}){
 
     function getPergunta(){
         return{
-            type:"PROXIMA_PERGUNTA"
+            type:"NEXT_PERGUNTA"
         }
     }
 
@@ -84,20 +83,20 @@ function Perguntas({dados,quantidades,dispatch,navigation}){
                 
             </BrContent>
             <BrContent flex={0.4} middle bg='#74c' style={{padding: 20,}}>
-                <Text style={{color:'#fff',fontSize:22}}>{dados.pergunta}</Text> 
+                <Text style={{color:'#fff',fontSize:22}}>{pergunta.pergunta}</Text> 
             </BrContent>
             <BrContent flex={0.4} middle vw='100%'>
 
-            {dados.alternativas.map(function(item,i){
+            { pergunta.alternativas.map(function(item,i){
                 return(
 
                     <TouchableOpacity onPress={ ()=>{
-                        dispatch(setEscolha(dados.numPergunta,i+1))
-                        // if(quantidades.respondida+1 == quantidades.total){
-                        //     navigation.navigate('Resultado');
-                        // }else{
-                        //     dispatch(getPergunta())
-                        // }
+                        dispatch(setEscolha(pergunta.numPergunta,i+1))
+                        if(quantidades.respondida+1 == quantidades.total){
+                            navigation.navigate('Resultado');
+                        }else{
+                            dispatch(getPergunta())
+                        }
                     }    
                     }>
 
@@ -106,7 +105,7 @@ function Perguntas({dados,quantidades,dispatch,navigation}){
                         </BrContent> 
                     </TouchableOpacity>                   
                 )
-            })}
+            }) }
 
             </BrContent>
 
@@ -116,6 +115,6 @@ function Perguntas({dados,quantidades,dispatch,navigation}){
 }
 
 export default connect(state => ({
-    dados:state.pergunta,
-    quantidades:state.qtd 
+    quantidades:state.qtd ,
+    pergunta :state.pergunta
 }))(Perguntas);

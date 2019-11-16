@@ -1,7 +1,12 @@
 import {createStore} from 'redux';
 
 const INITIAL = {
+    user:{
+        device:"123456",
+        nome:"nooome"
+    },
     dados: [] ,
+    concurso:{},
     qtd:{
         total:0,
         respondida:0
@@ -14,26 +19,34 @@ const INITIAL = {
 } ;
 
 
-function rede(state=INITIAL,action){
+function store(state=INITIAL,action){
 
-    if (action.type == 'PROXIMA_PERGUNTA'){
+    if(action.type == 'SET_USER'){
+
+        return{
+            ...state,
+            user:action.data
+        }
+
+    }
+
+    if (action.type == 'NEXT_PERGUNTA'){
         const x = {...state} ;
         let resultado = null;
         let tot = 0 ;
         let response = 0 ;
-        x.dados[0].concurso[0].perguntas.map(
+        x.concurso.perguntas.map(
             function(itens,i){
-                console.log(tot);
                 tot += 1 ;
-                if (itens.alternativaEscolhida == 0){
-                    resultado = itens ;
+                if (itens.alternativaEscolhida == null  ||  itens.alternativaEscolhida == 0 ){
+                    resultado = itens;
+                    itens.alternativaEscolhida = 0 ;
                 }else{
                     response += 1 ;
                 }
                 
             }
         )
-
 
         return{
             ...state,
@@ -44,6 +57,38 @@ function rede(state=INITIAL,action){
             }
             
         }
+
+    }
+
+    if (action.type == 'INIT_CONCURSO'){
+        // const x = {...state} ;
+        // let resultado = null;
+        // let tot = 0 ;
+        // let response = 0 ;
+        // x.dados[0].concurso[0].perguntas.map(
+        //     function(itens,i){
+        //         console.log(tot);
+        //         tot += 1 ;
+        //         if (itens.alternativaEscolhida == 0){
+        //             resultado = itens ;
+        //         }else{
+        //             response += 1 ;
+        //         }
+                
+        //     }
+        // )
+
+
+        return{
+            ...state,
+            concurso: action.data 
+            // pergunta:resultado,
+            // qtd:{
+            //     total: tot,
+            //     respondida:response
+            // }
+            
+        }
     }
 
 
@@ -52,7 +97,8 @@ function rede(state=INITIAL,action){
        const x = {...state} ; // 
        let p = 0 ;
 
-       x.dados[0].concurso[0].perguntas.map(function(itens,i){
+       x.concurso.perguntas.map(function(itens,i){
+
            if (itens.numPergunta == action.data.pergunta) {               
                itens.alternativaEscolhida = action.data.resposta ;
                if (itens.numAlternativaCorreta == action.data.resposta) {
@@ -61,12 +107,13 @@ function rede(state=INITIAL,action){
            }
        })
 
+
         return {
             ...state,
-            dados:x.dados,
+            concurso:x.concurso,
             pontos:state.pontos+p
         }
-    }
+    } 
 
     if(action.type == 'API'){
         return{
@@ -85,6 +132,6 @@ function rede(state=INITIAL,action){
     return state; 
 }
 
-const Store =  createStore(rede) ;
+const Store =  createStore(store) ;
   
 export default Store ;

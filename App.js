@@ -3,15 +3,13 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
+import { Provider } from 'react-redux';
+import Store      from './src/Store/index';
 
-import {Provider} from 'react-redux';
-import Store from './src/Store/index';
-
-
-import Home      from './src/Home/index';
+import Home      from './src/Home/index'     ;
 import Perguntas from './src/Perguntas/index';
 import Resultado from './src/Resultado/index';
-import Register from './src/Register/index' ;
+import Register  from './src/Register/index' ;
 
 const MainNavigator = createStackNavigator({
   Home ,

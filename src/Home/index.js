@@ -9,53 +9,34 @@ import Constants from 'expo-constants';
 
 
 
-export function Home({dados,user,dispatch,navigation}) {
+export function Home(props) {
 
 //  const [dados,setDados]        = useState('');
   const [refreshing,setRefresh] = useState(false);
   const [modal,setModal] = useState(false);
 
-  function getInit(all){
-    return{
-      type:"API",
-      data:all
-    }
-  }
-
-  function setU(data){
-    return{
-      type:"SET_USER",
-      data:data
-    }
-  }
-
-  function getPergunta(numConc){
-    return{
-        type:"INIT_CONCURSO",
-        data: numConc
-    }
-  }
 
   async function loadDados(){
 
     const url = '/showUsers/'+Constants.installationId;
     const currentUser = await api.get(url);
-
  
     if(currentUser.data.length > 0){
-      dispatch(setU(currentUser.data[0]))
+      props.setDevice(currentUser.data[0].device)
+      props.setNome(currentUser.data[0].nome);
     }else{
       navigation.navigate('Register'); 
     }
 
-
-
-
-
-   // setRefresh(true);
+    // setRefresh(true);
     console.log('Consultando api...');
-    const response = await api.get('/showConcursos') ; 
-    dispatch(getInit( response.data ));
+    await api.get('/showConcursos').then((r)=>{
+
+      props.setDados(r.data)
+    }).catch((e)=>{
+      alert(e)
+    }) ; 
+    
   }
 
   useEffect(
@@ -78,7 +59,7 @@ export function Home({dados,user,dispatch,navigation}) {
             <BrContent flex={1} middle bg= '#3c5'>
             <Text>{Constants.installationId}</Text>
 
-              <TouchableHighlight
+                <TouchableHighlight
                   onPress={() => {
                     setModal(false)
                   }}>
@@ -88,33 +69,34 @@ export function Home({dados,user,dispatch,navigation}) {
 
             
 
-            </Modal>
+        </Modal>
 
 
       <BrContent flex={0.4} alignCenter bg='#74c' justifyAround>
         <Text onPress={()=>{setModal(true)}} style={{color:'#fff',fontSize:18}}>Perguntas e respostas!?</Text>
-        <Text>{user.nome}</Text>
-        <Text>{user.device}</Text>
+        <Text>{props.user.nome}</Text>
+        <Text>{props.user.device}</Text>
 
       </BrContent>
       <BrContent flex={1} style={{margin: 10}}>
+    
         <FlatList
             onRefresh={() => loadDados()}
             refreshing={refreshing}
-            data={dados}
-            keyExtractor={dados._id}
+            data={props.dados}
+            keyExtractor={props.dados._id}
             renderItem={({item}) => (
               <TouchableOpacity onPress={async()=>{
 
                 const res = await  api.post('/duplicidadeParticipacao/'+item._id,{
-                  device : user.device
+                  device : props.user.device
                 });
 
-                if(res.data.res == true){
+                if(res.data.res == false){
                   alert('Ja participou')
                 }else{
-                  dispatch(getPergunta(item));
-                  navigation.navigate('Perguntas');  
+                 props.setConcurso(item);
+                 props.navigation.navigate('Perguntas');  
                 }
 
 
@@ -131,6 +113,7 @@ export function Home({dados,user,dispatch,navigation}) {
    
                     
               </TouchableOpacity>
+          
               
             ) }
           />
@@ -140,8 +123,17 @@ export function Home({dados,user,dispatch,navigation}) {
   );
 }
 
+const mapStateToProps = (state)=>({
+  user : state.userReducer,
+  dados : state.listagemReducer.dados
+})
 
-export default connect(state => ({
-    dados:state.dados,
-    user : state.user
-}))(Home);
+const mapDispatchToProps = (dispatch)=>({
+  setDevice:(device) => dispatch({type:'SET_DEVICE' , payload:{device}}),
+  setNome:(nome) => dispatch({type:'SET_NOME', payload:{nome}}) ,
+  setDados:(dados) => dispatch({type:'SET_DADOS',payload:{dados}}),
+  setConcurso:(concurso) => dispatch({type:'SET_CONCURSO',payload:{concurso}})
+})
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Home);

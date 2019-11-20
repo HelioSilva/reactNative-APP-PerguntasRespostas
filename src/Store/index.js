@@ -17,11 +17,13 @@ const INITIAL = {
 function rede(state=INITIAL,action){
 
     if (action.type == 'PROXIMA_PERGUNTA'){
+        
         const x = {...state} ;
+        console.log(x.dados)
         let resultado = null;
         let tot = 0 ;
         let response = 0 ;
-        x.dados[0].concurso[0].perguntas.map(
+        x.dados[0].perguntas.map(
             function(itens,i){
                 console.log(tot);
                 tot += 1 ;

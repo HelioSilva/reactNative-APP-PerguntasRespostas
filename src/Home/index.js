@@ -41,9 +41,9 @@ export function Home({dados,dispatch,navigation}) {
     <BrContent flex={1} safe>
       
       <BrContent flex={0.4} middle bg='#74c'>
-        <Text style={{color:'#fff',fontSize:18}}>Concurso Bíblico APP 88</Text>
+        <Text style={{color:'#fff',fontSize:18}}>Concurso Bíblico</Text>
       </BrContent>
-      <BrContent flex style={{margin: 10}}>
+      <BrContent flex={1} style={{margin: 10}}>
         <FlatList
             onRefresh={() => loadDados()}
             refreshing={refreshing}

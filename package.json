@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "brcomponentsrn": "0.0.4",
     "expo": "^35.0.0",
     "expo-cli": "^3.4.1",
